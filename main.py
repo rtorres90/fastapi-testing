@@ -2,12 +2,22 @@ from typing import Union
 
 from fastapi import FastAPI
 
+from sqlalchemy import create_engine, select
+from sqlalchemy.orm import Session
+
+from models import User
+
+engine = create_engine("sqlite:///mydb.db", echo=True)
+session = Session(engine)
+
 app = FastAPI()
 
 
 @app.get("/")
 async def read_root():
-    return {"Hello": "World"}
+    user = select(User).where(User.first_name.contains("test"))
+    user = session.scalars(user).one()
+    return {"Hello": user.first_name}
 
 
 @app.get("/items/{item_id}")
