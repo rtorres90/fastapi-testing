@@ -39,11 +39,12 @@ class Budget(Base):
 class Expense(Base):
     __tablename__ = "expense"
     id: Mapped[int] = mapped_column(primary_key=True)
-    title: Mapped[str]
+    name: Mapped[str]
     amount: Mapped[int]
     user_id: Mapped[int] = mapped_column(ForeignKey("user_account.id"))
     user: Mapped["User"] = relationship(back_populates="expenses")
     type_of_expense_id: Mapped[int] = mapped_column(ForeignKey("type_of_expense.id"))
+    type_of_expense: Mapped["TypeOfExpense"] = relationship("TypeOfExpense")
     def __repr__(self) -> str:
         return f"Expense(id={self.id!r}, title={self.title!r}), amount={self.amount!r})"
 
@@ -57,11 +58,12 @@ class TypeOfExpense(Base):
 class Income(Base):
     __tablename__ = "income"
     id: Mapped[int] = mapped_column(primary_key=True)
-    title: Mapped[str]
+    name: Mapped[str]
     amount: Mapped[int]
     user_id: Mapped[int] = mapped_column(ForeignKey("user_account.id"))
     user: Mapped["User"] = relationship(back_populates="incomes")
     typo_of_income_id: Mapped[int] = mapped_column(ForeignKey("type_of_income.id"))
+    type_of_income: Mapped["TypeOfIncome"] = relationship("TypeOfIncome")
     def __repr__(self) -> str:
         return f"Income(id={self.id!r}, title={self.title!r}), amount={self.amount!r})"
 
